@@ -511,6 +511,33 @@ namespace DS4Windows
                 return Properties.Resources.NoneText;
         }
 
+        public int getDS4BatteryValue(int index)
+        {
+            DS4Device d = DS4Controllers[index];
+            if (d != null)
+            {
+                int battery;
+                if (!d.IsAlive())
+                    battery = 0;
+
+                if (d.isCharging())
+                {
+                    if (d.getBattery() >= 100)
+                        battery = 100;
+                    else
+                        battery = d.getBattery();
+                }
+                else
+                {
+                    battery = d.getBattery();
+                }
+
+                return battery;
+            }
+            else
+                return 0;
+        }
+
         public string getDS4Battery(int index)
         {
             DS4Device d = DS4Controllers[index];

@@ -364,6 +364,12 @@ namespace DS4Windows
             get { return m_Config.CheckWhen; }
         }
 
+        public static int TrayBatteryIndex
+        {
+            set { m_Config.TrayBatteryIndex = value; }
+            get { return m_Config.TrayBatteryIndex; }
+        }
+
         public static int Notifications
         {
             set { m_Config.notifications = value; }
@@ -1261,6 +1267,7 @@ namespace DS4Windows
         public Boolean startMinimized = false;
         public DateTime lastChecked;
         public int CheckWhen = 1;
+        public int TrayBatteryIndex = 0;
         public int notifications = 2;
         public bool disconnectBTAtStop = false;
         public bool swipeProfiles = true;
@@ -2811,6 +2818,8 @@ namespace DS4Windows
                     catch { missingSetting = true; }
                     try { Item = m_Xdoc.SelectSingleNode("/Profile/CheckWhen"); Int32.TryParse(Item.InnerText, out CheckWhen); }
                     catch { missingSetting = true; }
+                    try { Item = m_Xdoc.SelectSingleNode("/Profile/TrayBatteryIndex"); Int32.TryParse(Item.InnerText, out TrayBatteryIndex); }
+                    catch { missingSetting = true; }
                     try
                     {
                         Item = m_Xdoc.SelectSingleNode("/Profile/Notifications");
@@ -2891,6 +2900,7 @@ namespace DS4Windows
 
             XmlNode xmlLastChecked = m_Xdoc.CreateNode(XmlNodeType.Element, "LastChecked", null); xmlLastChecked.InnerText = lastChecked.ToString(); Node.AppendChild(xmlLastChecked);
             XmlNode xmlCheckWhen = m_Xdoc.CreateNode(XmlNodeType.Element, "CheckWhen", null); xmlCheckWhen.InnerText = CheckWhen.ToString(); Node.AppendChild(xmlCheckWhen);
+            XmlNode xmlTrayBatteryIndex = m_Xdoc.CreateNode(XmlNodeType.Element, "TrayBatteryIndex", null); xmlTrayBatteryIndex.InnerText = TrayBatteryIndex.ToString(); Node.AppendChild(xmlTrayBatteryIndex);
             XmlNode xmlNotifications = m_Xdoc.CreateNode(XmlNodeType.Element, "Notifications", null); xmlNotifications.InnerText = notifications.ToString(); Node.AppendChild(xmlNotifications);
             XmlNode xmlDisconnectBT = m_Xdoc.CreateNode(XmlNodeType.Element, "DisconnectBTAtStop", null); xmlDisconnectBT.InnerText = disconnectBTAtStop.ToString(); Node.AppendChild(xmlDisconnectBT);
             XmlNode xmlSwipeProfiles = m_Xdoc.CreateNode(XmlNodeType.Element, "SwipeProfiles", null); xmlSwipeProfiles.InnerText = swipeProfiles.ToString(); Node.AppendChild(xmlSwipeProfiles);

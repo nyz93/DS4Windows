@@ -27,6 +27,8 @@ namespace DS4Windows
         delegate void DeviceSerialChangedDelegate(object sender, SerialChangeArgs args);
         protected Label[] Pads, Batteries;
         protected ComboBox[] cbs;
+        protected RadioButton[] trayBatts;
+        protected int[] batteryValues;
         protected Button[] ebns;
         protected Button[] lights;
         protected PictureBox[] statPB;
@@ -98,6 +100,8 @@ namespace DS4Windows
 
             Pads = new Label[4] { lbPad1, lbPad2, lbPad3, lbPad4 };
             Batteries = new Label[4] { lbBatt1, lbBatt2, lbBatt3, lbBatt4 };
+            trayBatts = new RadioButton[4] { rbtnTrayBatt1, rbtnTrayBatt2, rbtnTrayBatt3, rbtnTrayBatt4 };
+            batteryValues = new int[4] { 0, 0, 0, 0 };
             cbs = new ComboBox[4] { cBController1, cBController2, cBController3, cBController4 };
             ebns = new Button[4] { bnEditC1, bnEditC2, bnEditC3, bnEditC4 };
             lights = new Button[4] { bnLight1, bnLight2, bnLight3, bnLight4 };
@@ -389,6 +393,7 @@ namespace DS4Windows
             {
                 runStartTaskRadio.Enabled = true;
             }
+
 
             if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\DS4Windows.lnk"))
             {
@@ -1061,11 +1066,14 @@ namespace DS4Windows
                 battery = level + "%";
             }
 
-            Batteries[args.getIndex()].Text = battery;
+	    Batteries[args.getIndex()].Text = battery;
+	    Batteries[args.getIndex()].Text = battery;
+	    batteryValues[args.getIndex()] = level;
 
-            // Update device battery level display for tray icon
-            generateDeviceNotifyText(args.getIndex());
-            populateNotifyText();
+	    // Update device battery level display for tray icon
+	    generateDeviceNotifyText(args.getIndex());
+	    generateTrayIconLevel(args.getIndex());
+	    populateNotifyText();
         }
 
         protected void populateFullNotifyText()
@@ -1112,7 +1120,23 @@ namespace DS4Windows
                 notifyText[index + 1] = string.Empty;
             }
         }
+        protected void generateTrayIconLevel(int index)
+        {
+            if(index == Global.TrayBatteryIndex)
+            {
+                int level = batteryValues[index];
+                using (Bitmap bmp = new Bitmap(32, 32))
+                using (Graphics gr = Graphics.FromImage(bmp))
+                {
+                    int top = (int)(28.0 - level * .28);
+                    gr.Clear(Color.Black);
+                    gr.FillRectangle(Brushes.Transparent, new Rectangle(2, 2, 28, 28));
+                    gr.FillRectangle(Brushes.Green, new Rectangle(2, top+2, 28, 28 - top));
 
+                    notifyIcon1.Icon = Icon.FromHandle(bmp.GetHicon());
+                }
+            }
+        }
         protected void populateNotifyText()
         {
             string tooltip = notifyText[0];
@@ -1183,6 +1207,7 @@ namespace DS4Windows
                     }
 
                     Batteries[Index].Text = Program.rootHub.getDS4Battery(Index);
+                    batteryValues[Index] = Program.rootHub.getDS4BatteryValue(Index);
                     if (Pads[Index].Text != String.Empty)
                     {
                         if (runningBat)
@@ -1204,6 +1229,7 @@ namespace DS4Windows
                     }
 
                     generateDeviceNotifyText(Index);
+                    generateTrayIconLevel(Index);
                     populateNotifyText();
                     //if (Program.rootHub.getShortDS4ControllerInfo(Index) != Properties.Resources.NoneText)
                     //    tooltip += "\n" + (Index + 1) + ": " + Program.rootHub.getShortDS4ControllerInfo(Index); // Carefully stay under the 63 character limit.
@@ -1221,11 +1247,52 @@ namespace DS4Windows
 
         protected void ControllerRemovedChange(object sender, ControllerRemovedArgs args)
         {
+<<<<<<< HEAD
             int devIndex = args.getIndex();
             Pads[devIndex].Text = Properties.Resources.Disconnected;
             Enable_Controls(devIndex, false);
             statPB[devIndex].Visible = false;
             toolTip1.SetToolTip(statPB[devIndex], "");
+=======
+            if (this.InvokeRequired)
+            {
+                try
+                {
+                    ControllerRemovedDelegate d = new ControllerRemovedDelegate(ControllerRemovedChange);
+                    this.BeginInvoke(d, new object[] { sender, args });
+                }
+                catch { }
+            }
+            else
+            {
+                int devIndex = args.getIndex();
+                Pads[devIndex].Text = Properties.Resources.Disconnected;
+                Enable_Controls(devIndex, false);
+                statPB[devIndex].Visible = false;
+                toolTip1.SetToolTip(statPB[devIndex], "");
+
+                DS4Device[] devices = Program.rootHub.DS4Controllers;
+                int controllerLen = devices.Length;
+                bool nocontrollers = true;
+                for (Int32 i = 0, PadsLen = Pads.Length; nocontrollers && i < PadsLen; i++)
+                {
+                    DS4Device d = devices[i];
+                    if (d != null)
+                    {
+                        nocontrollers = false;
+                    }
+                }
+
+                lbNoControllers.Visible = nocontrollers;
+                tLPControllers.Visible = !nocontrollers;
+
+                // Update device battery level display for tray icon
+                generateDeviceNotifyText(devIndex);
+                generateTrayIconLevel(devIndex);
+                populateNotifyText();
+            }
+        }
+>>>>>>> charge stuff and wpf
 
             DS4Device[] devices = Program.rootHub.DS4Controllers;
             int controllerLen = devices.Length;
@@ -1273,6 +1340,7 @@ namespace DS4Windows
             cbs[device].Visible = on;
             shortcuts[device].Visible = on;
             Batteries[device].Visible = on;
+            trayBatts[device].Visible = on;
         }
 
         protected void On_Debug(object sender, DebugEventArgs e)
@@ -1558,6 +1626,7 @@ namespace DS4Windows
                         lights[tdevice].BackColor = CustomColor[tdevice].ToColorA;
                     else
                         lights[tdevice].BackColor = MainColor[tdevice].ToColorA;
+                    trayBatts[tdevice].Checked = (TrayBatteryIndex == tdevice);
                 }
                 else if (cb.SelectedIndex == cb.Items.Count - 1 && cb.Items.Count > 1) //if +New Profile selected
                     ShowOptions(tdevice, "");
@@ -2311,6 +2380,20 @@ namespace DS4Windows
         private void cBDownloadLangauge_CheckedChanged(object sender, EventArgs e)
         {
             DownloadLang = cBDownloadLangauge.Checked;
+        }
+
+        private void rbtnTrayBatt_Click(object sender, EventArgs e)
+        {
+            var self = sender as RadioButton;
+            for(var i = 0; i < trayBatts.Length; i++)
+            {
+                if(trayBatts[i] != self) { trayBatts[i].Checked = false; }
+                else
+                {
+                    Global.TrayBatteryIndex = i;
+                    Global.Save();
+                }
+            }
         }
 
         private void cBFlashWhenLate_CheckedChanged(object sender, EventArgs e)

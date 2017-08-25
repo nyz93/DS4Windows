@@ -83,6 +83,11 @@
             this.bnLight1 = new System.Windows.Forms.Button();
             this.bnLight2 = new System.Windows.Forms.Button();
             this.bnLight4 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.rbtnTrayBatt1 = new System.Windows.Forms.RadioButton();
+            this.rbtnTrayBatt2 = new System.Windows.Forms.RadioButton();
+            this.rbtnTrayBatt3 = new System.Windows.Forms.RadioButton();
+            this.rbtnTrayBatt4 = new System.Windows.Forms.RadioButton();
             this.lbNoControllers = new System.Windows.Forms.Label();
             this.tabProfiles = new System.Windows.Forms.TabPage();
             this.lBProfiles = new System.Windows.Forms.ListBox();
@@ -367,21 +372,21 @@
             // tLPControllers
             // 
             resources.ApplyResources(this.tLPControllers, "tLPControllers");
-            this.tLPControllers.Controls.Add(this.bnLight3, 5, 3);
+            this.tLPControllers.Controls.Add(this.bnLight3, 6, 3);
             this.tLPControllers.Controls.Add(this.pBStatus1, 1, 1);
             this.tLPControllers.Controls.Add(this.lbPad1, 0, 1);
             this.tLPControllers.Controls.Add(this.lbPad2, 0, 2);
-            this.tLPControllers.Controls.Add(this.bnEditC3, 4, 3);
-            this.tLPControllers.Controls.Add(this.bnEditC4, 4, 4);
+            this.tLPControllers.Controls.Add(this.bnEditC3, 5, 3);
+            this.tLPControllers.Controls.Add(this.bnEditC4, 5, 4);
             this.tLPControllers.Controls.Add(this.lbPad3, 0, 3);
             this.tLPControllers.Controls.Add(this.lbPad4, 0, 4);
-            this.tLPControllers.Controls.Add(this.cBController1, 3, 1);
-            this.tLPControllers.Controls.Add(this.bnEditC2, 4, 2);
-            this.tLPControllers.Controls.Add(this.cBController2, 3, 2);
-            this.tLPControllers.Controls.Add(this.cBController3, 3, 3);
-            this.tLPControllers.Controls.Add(this.bnEditC1, 4, 1);
-            this.tLPControllers.Controls.Add(this.cBController4, 3, 4);
-            this.tLPControllers.Controls.Add(this.lbSelectedProfile, 3, 0);
+            this.tLPControllers.Controls.Add(this.cBController1, 4, 1);
+            this.tLPControllers.Controls.Add(this.bnEditC2, 5, 2);
+            this.tLPControllers.Controls.Add(this.cBController2, 4, 2);
+            this.tLPControllers.Controls.Add(this.cBController3, 4, 3);
+            this.tLPControllers.Controls.Add(this.bnEditC1, 5, 1);
+            this.tLPControllers.Controls.Add(this.cBController4, 4, 4);
+            this.tLPControllers.Controls.Add(this.lbSelectedProfile, 4, 0);
             this.tLPControllers.Controls.Add(this.lbID, 0, 0);
             this.tLPControllers.Controls.Add(this.lbStatus, 1, 0);
             this.tLPControllers.Controls.Add(this.lbBattery, 2, 0);
@@ -392,9 +397,14 @@
             this.tLPControllers.Controls.Add(this.pBStatus2, 1, 2);
             this.tLPControllers.Controls.Add(this.pBStatus3, 1, 3);
             this.tLPControllers.Controls.Add(this.pBStatus4, 1, 4);
-            this.tLPControllers.Controls.Add(this.bnLight1, 5, 1);
-            this.tLPControllers.Controls.Add(this.bnLight2, 5, 2);
-            this.tLPControllers.Controls.Add(this.bnLight4, 5, 4);
+            this.tLPControllers.Controls.Add(this.bnLight1, 6, 1);
+            this.tLPControllers.Controls.Add(this.bnLight2, 6, 2);
+            this.tLPControllers.Controls.Add(this.bnLight4, 6, 4);
+            this.tLPControllers.Controls.Add(this.label2, 3, 0);
+            this.tLPControllers.Controls.Add(this.rbtnTrayBatt1, 3, 1);
+            this.tLPControllers.Controls.Add(this.rbtnTrayBatt2, 3, 2);
+            this.tLPControllers.Controls.Add(this.rbtnTrayBatt3, 3, 3);
+            this.tLPControllers.Controls.Add(this.rbtnTrayBatt4, 3, 4);
             this.tLPControllers.Name = "tLPControllers";
             // 
             // bnLight3
@@ -612,6 +622,44 @@
             this.bnLight4.Tag = "3";
             this.bnLight4.UseVisualStyleBackColor = false;
             this.bnLight4.Click += new System.EventHandler(this.EditCustomLed);
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // rbtnTrayBatt1
+            // 
+            resources.ApplyResources(this.rbtnTrayBatt1, "rbtnTrayBatt1");
+            this.rbtnTrayBatt1.Name = "rbtnTrayBatt1";
+            this.rbtnTrayBatt1.TabStop = true;
+            this.rbtnTrayBatt1.UseVisualStyleBackColor = true;
+            this.rbtnTrayBatt1.Click += new System.EventHandler(this.rbtnTrayBatt_Click);
+            // 
+            // rbtnTrayBatt2
+            // 
+            resources.ApplyResources(this.rbtnTrayBatt2, "rbtnTrayBatt2");
+            this.rbtnTrayBatt2.Name = "rbtnTrayBatt2";
+            this.rbtnTrayBatt2.TabStop = true;
+            this.rbtnTrayBatt2.UseVisualStyleBackColor = true;
+            this.rbtnTrayBatt2.Click += new System.EventHandler(this.rbtnTrayBatt_Click);
+            // 
+            // rbtnTrayBatt3
+            // 
+            resources.ApplyResources(this.rbtnTrayBatt3, "rbtnTrayBatt3");
+            this.rbtnTrayBatt3.AutoCheck = false;
+            this.rbtnTrayBatt3.Name = "rbtnTrayBatt3";
+            this.rbtnTrayBatt3.TabStop = true;
+            this.rbtnTrayBatt3.UseVisualStyleBackColor = true;
+            this.rbtnTrayBatt3.Click += new System.EventHandler(this.rbtnTrayBatt_Click);
+            // 
+            // rbtnTrayBatt4
+            // 
+            resources.ApplyResources(this.rbtnTrayBatt4, "rbtnTrayBatt4");
+            this.rbtnTrayBatt4.Name = "rbtnTrayBatt4";
+            this.rbtnTrayBatt4.TabStop = true;
+            this.rbtnTrayBatt4.UseVisualStyleBackColor = true;
+            this.rbtnTrayBatt4.Click += new System.EventHandler(this.rbtnTrayBatt_Click);
             // 
             // lbNoControllers
             // 
@@ -1383,6 +1431,11 @@
         private System.Windows.Forms.RadioButton runStartProgRadio;
         private System.Windows.Forms.RadioButton runStartTaskRadio;
         private System.Windows.Forms.PictureBox uacPictureBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RadioButton rbtnTrayBatt1;
+        private System.Windows.Forms.RadioButton rbtnTrayBatt2;
+        private System.Windows.Forms.RadioButton rbtnTrayBatt3;
+        private System.Windows.Forms.RadioButton rbtnTrayBatt4;
         //private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }
